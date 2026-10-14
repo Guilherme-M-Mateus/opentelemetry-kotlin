@@ -34,13 +34,13 @@ internal class ContextImplTest {
 
     @Test
     fun testContextCreateContextKey() {
-        assertNotEquals(factory.createKey<String>("my_key"), factory.createKey("my_key"))
+        assertNotEquals(createContextKey<String>("my_key"), createContextKey("my_key"))
     }
 
     @Test
     fun testContextSameNamedKeysAreNotInterchangeable() {
-        val key = factory.createKey<String>("my_key")
-        val sameName = factory.createKey<String>("my_key")
+        val key = createContextKey<String>("my_key")
+        val sameName = createContextKey<String>("my_key")
         val ctx = factory.root().set(key, "my_value")
 
         assertEquals("my_value", ctx.get(key))
@@ -50,14 +50,14 @@ internal class ContextImplTest {
     @Test
     fun testContextGetAbsentValue() {
         val ctx = factory.root()
-        val key = factory.createKey<String>("my_key")
+        val key = createContextKey<String>("my_key")
         assertNull(ctx.get(key))
     }
 
     @Test
     fun testContextGetPresentValue() {
         val ctx = factory.root()
-        val key = factory.createKey<String>("my_key")
+        val key = createContextKey<String>("my_key")
         val value = "my_value"
         val newCtx = ctx.set(key, value)
 
@@ -68,9 +68,9 @@ internal class ContextImplTest {
     @Test
     fun testContextMultipleValues() {
         val ctx = factory.root()
-        val key1 = factory.createKey<String>("my_key1")
-        val key2 = factory.createKey<String>("my_key2")
-        val key3 = factory.createKey<Int>("my_key3")
+        val key1 = createContextKey<String>("my_key1")
+        val key2 = createContextKey<String>("my_key2")
+        val key3 = createContextKey<Int>("my_key3")
         val value1 = "my_value1"
         val value2 = "my_value2"
         val value3 = 42
@@ -84,7 +84,7 @@ internal class ContextImplTest {
     @Test
     fun testContextOverrideExistingKey() {
         val ctx = factory.root()
-        val key = factory.createKey<String>("my_key")
+        val key = createContextKey<String>("my_key")
         val value1 = "my_value1"
         val value2 = "my_value2"
 
@@ -95,7 +95,7 @@ internal class ContextImplTest {
     @Test
     fun testContextKeyExplicitNull() {
         val ctx = factory.root()
-        val key = factory.createKey<String>("key")
+        val key = createContextKey<String>("key")
         val newCtx = ctx.set(key, null)
         assertNull(newCtx.get(key))
     }

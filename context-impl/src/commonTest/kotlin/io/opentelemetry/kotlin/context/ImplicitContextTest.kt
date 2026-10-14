@@ -117,5 +117,5 @@ internal class ImplicitContextTest {
     }
 
     private fun newContext(): Context =
-        factory.root().set(factory.createKey<String>("key"), "value")
+        factory.root().set(createContextKey<String>("key"), "value")
 }

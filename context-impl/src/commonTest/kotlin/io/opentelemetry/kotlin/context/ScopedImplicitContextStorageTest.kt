@@ -69,7 +69,7 @@ internal class ScopedImplicitContextStorageTest {
     }
 
     private fun newContext(): Context =
-        factory.root().set(factory.createKey("key"), Any())
+        factory.root().set(createContextKey("key"), Any())
 
     private class FakeScopedImplicitContextStorage(
         rootSupplier: () -> Context,
