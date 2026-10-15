@@ -11,8 +11,7 @@ internal class PropagatingNoopTracer(
 ) : Tracer {
 
     private val root = contextFactory.root()
-    private val invalidSpanContext = createInvalidSpanContext()
-    private val invalidSpan = NonRecordingSpan(invalidSpanContext, invalidSpanContext)
+    private val invalidSpan = createInvalidSpanContext().wrapInSpan()
 
     override fun enabled(): Boolean = false
 
@@ -30,7 +29,7 @@ internal class PropagatingNoopTracer(
             }
             val parentSpanContext = ctx.extractSpan().spanContext
             when {
-                parentSpanContext.isValid -> NonRecordingSpan(invalidSpanContext, parentSpanContext)
+                parentSpanContext.isValid -> parentSpanContext.wrapInSpan()
                 else -> invalidSpan
             }
         }

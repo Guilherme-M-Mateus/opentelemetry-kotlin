@@ -7,12 +7,12 @@ import io.opentelemetry.kotlin.context.Context
 import io.opentelemetry.kotlin.factory.ContextFactoryImpl
 import io.opentelemetry.kotlin.factory.hexToByteArray
 import io.opentelemetry.kotlin.init.SamplerConfigImpl
-import io.opentelemetry.kotlin.tracing.NonRecordingSpan
 import io.opentelemetry.kotlin.tracing.SpanKind
 import io.opentelemetry.kotlin.tracing.SpanLinkImpl
 import io.opentelemetry.kotlin.tracing.createInvalidSpanContext
 import io.opentelemetry.kotlin.tracing.createSpanContext
 import io.opentelemetry.kotlin.tracing.model.SpanLink
+import io.opentelemetry.kotlin.tracing.wrapInSpan
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -243,7 +243,7 @@ internal class ComposableRuleBasedSamplerTest {
                 traceState { put("ot", otValue) }
             }
         }
-        val parentSpan = NonRecordingSpan(createInvalidSpanContext(), parentSpanContext)
+        val parentSpan = parentSpanContext.wrapInSpan()
         return contextFactory.root().storeSpan(parentSpan)
     }
 

@@ -10,12 +10,12 @@ import io.opentelemetry.kotlin.aliases.OtelJavaScope
 import io.opentelemetry.kotlin.aliases.OtelJavaSpan
 import io.opentelemetry.kotlin.baggage.toOtelJavaBaggage
 import io.opentelemetry.kotlin.baggage.toOtelKotlinBaggage
-import io.opentelemetry.kotlin.tracing.NonRecordingSpan
 import io.opentelemetry.kotlin.tracing.Span
 import io.opentelemetry.kotlin.tracing.createInvalidSpanContext
 import io.opentelemetry.kotlin.tracing.ext.toOtelJavaSpan
 import io.opentelemetry.kotlin.tracing.ext.toOtelKotlinSpanContext
 import io.opentelemetry.kotlin.tracing.model.OtelJavaSpanAdapter
+import io.opentelemetry.kotlin.tracing.wrapInSpan
 
 /**
  * Java keys are wrapped in a fresh [ContextKeyAdapter] on each access. Adapters compare equality
@@ -70,8 +70,8 @@ internal class OtelJavaContextAdapter(
 
     private fun OtelJavaSpan?.toOtelKotlinSpan(): Span = when (this) {
         is OtelJavaSpanAdapter -> span
-        null -> NonRecordingSpan(createInvalidSpanContext(), createInvalidSpanContext())
-        else -> NonRecordingSpan(createInvalidSpanContext(), spanContext.toOtelKotlinSpanContext())
+        null -> createInvalidSpanContext().wrapInSpan()
+        else -> spanContext.toOtelKotlinSpanContext().wrapInSpan()
     }
 
     override fun equals(other: Any?): Boolean = other is OtelJavaContextAdapter && other.impl == impl
