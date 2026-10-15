@@ -40,7 +40,7 @@ internal class TracerImpl(
     private val noopSpan = NoopOpenTelemetry.tracerProvider.getTracer("").startSpan("")
     private val root = contextFactory.root()
     private val invalidSpanContext = createInvalidSpanContext()
-    private val invalidSpan = NonRecordingSpan(invalidSpanContext, invalidSpanContext)
+    private val invalidSpan = invalidSpanContext.wrapInSpan()
 
     override fun enabled(): Boolean =
         sdkErrorHandler.sdkGuardOrDefault(false, "Tracer.enabled failed") {
@@ -105,7 +105,7 @@ internal class TracerImpl(
                 )
 
                 if (decision == SamplingResult.Decision.DROP) {
-                    return@ifActiveOrElse NonRecordingSpan(parentSpanContext, spanContext)
+                    return@ifActiveOrElse spanContext.wrapInSpan()
                 }
 
                 val spanModel = SpanModel(

@@ -1,25 +1,27 @@
 package io.opentelemetry.kotlin.tracing
 
+import io.opentelemetry.kotlin.ExperimentalApi
 import io.opentelemetry.kotlin.attributes.AnyValue
 import io.opentelemetry.kotlin.attributes.AttributesMutator
 
 /**
- * A reference to a [Span] that cannot actively record any data. This can be useful for
- * propagating traces where it's not necessary to mutate the span - e.g. if a caller only needs to
- * know the trace/span IDs for a parent span.
+ * A [Span] that wraps a [SpanContext] and cannot record any data. This is useful for propagating
+ * traces where it's not necessary to mutate the span - e.g. if a caller only needs to know the
+ * trace/span IDs for a parent span.
+ *
+ * https://opentelemetry.io/docs/specs/otel/trace/api/#wrapping-a-spancontext-in-a-span
  */
-class NonRecordingSpan(
-    override val parent: SpanContext,
+@OptIn(ExperimentalApi::class)
+internal class NonRecordingSpanImpl(
     override val spanContext: SpanContext,
 ) : Span {
+
+    override val parent: SpanContext = createInvalidSpanContext()
 
     override fun setName(name: String) {
     }
 
     override fun setStatus(status: StatusData) {
-    }
-
-    override fun setBooleanAttribute(key: String, value: Boolean) {
     }
 
     override fun end() {
@@ -44,6 +46,9 @@ class NonRecordingSpan(
     }
 
     override fun setStringAttribute(key: String, value: String) {
+    }
+
+    override fun setBooleanAttribute(key: String, value: Boolean) {
     }
 
     override fun setLongAttribute(key: String, value: Long) {

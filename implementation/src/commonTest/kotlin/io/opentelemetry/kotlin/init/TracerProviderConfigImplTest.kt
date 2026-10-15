@@ -18,9 +18,7 @@ import io.opentelemetry.kotlin.sdkDefaultAttributes
 import io.opentelemetry.kotlin.sdkDefaultSchemaUrl
 import io.opentelemetry.kotlin.semconv.ServiceAttributes
 import io.opentelemetry.kotlin.semconv.TelemetryAttributes
-import io.opentelemetry.kotlin.tracing.NonRecordingSpan
 import io.opentelemetry.kotlin.tracing.SpanKind
-import io.opentelemetry.kotlin.tracing.createInvalidSpanContext
 import io.opentelemetry.kotlin.tracing.createSpanContext
 import io.opentelemetry.kotlin.tracing.export.FakeSpanProcessor
 import io.opentelemetry.kotlin.tracing.export.SpanProcessor
@@ -29,6 +27,7 @@ import io.opentelemetry.kotlin.tracing.sampling.FakeSampler
 import io.opentelemetry.kotlin.tracing.sampling.ParentBasedSampler
 import io.opentelemetry.kotlin.tracing.sampling.Sampler
 import io.opentelemetry.kotlin.tracing.sampling.SamplingResult.Decision
+import io.opentelemetry.kotlin.tracing.wrapInSpan
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -260,7 +259,7 @@ internal class TracerProviderConfigImplTest {
             isSampled = sampled
             this.isRemote = isRemote
         }
-        val parentSpan = NonRecordingSpan(createInvalidSpanContext(), parentSpanContext)
+        val parentSpan = parentSpanContext.wrapInSpan()
         return contextFactory.root().storeSpan(parentSpan)
     }
 

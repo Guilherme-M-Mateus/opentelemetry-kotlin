@@ -391,6 +391,10 @@ public final class io/opentelemetry/kotlin/tracing/SpanLinkCreator$DefaultImpls 
 	public static synthetic fun addLink$default (Lio/opentelemetry/kotlin/tracing/SpanLinkCreator;Lio/opentelemetry/kotlin/tracing/SpanContext;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 }
 
+public final class io/opentelemetry/kotlin/tracing/SpanWrapEntrypointKt {
+	public static final fun wrapInSpan (Lio/opentelemetry/kotlin/tracing/SpanContext;)Lio/opentelemetry/kotlin/tracing/Span;
+}
+
 public final class io/opentelemetry/kotlin/tracing/StatusCode : java/lang/Enum {
 	public static final field ERROR Lio/opentelemetry/kotlin/tracing/StatusCode;
 	public static final field OK Lio/opentelemetry/kotlin/tracing/StatusCode;
